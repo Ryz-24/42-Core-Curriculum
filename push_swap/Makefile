@@ -10,41 +10,45 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = push_swap
+NAME        = push_swap
 
-CC = gcc
-CFLAGS = -Wall -Wextra -Werror
-RM = rm -rf
+CC          = gcc
+CFLAGS      = -Wall -Wextra -Werror
 
-SRCS = 	chunks_sort.c\
-	error_check.c\
-	handle_pos.c\
-	index.c\
-	op_push.c\
-	op_swap.c\
-	op_rotate.c\
-	op_reverse_rotate.c\
-	parse_args.c\
-	push_swap.c\
-	sort_small.c\
-	stack_func.c\
-	utils.c\
-	libft/libft.a
+RM          = rm -f
 
-$(NAME) :
-	make -C libft
-	gcc $(CFLAGS) $(SRCS) -o $(NAME)
+LIBFT_DIR   = libft
+LIBFT       = $(LIBFT_DIR)/libft.a
 
-all : $(NAME)
+SRCS        = fun1.c fun2.c fun3.c fun4.c fun5.c \
+              fun6.c fun7.c fun8.c fun9.c \
+              fun10.c fun11.c fun12.c fun13.c
 
-clean :
+OBJS        = $(SRCS:.c=.o)
+
+INCLUDES    = -I. -I$(LIBFT_DIR)
+
+# ================= RULES ================= #
+
+all: $(NAME)
+
+$(NAME): $(LIBFT) $(OBJS)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+
+$(LIBFT):
+	make -C $(LIBFT_DIR)
+
+%.o: %.c
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+clean:
+	$(RM) $(OBJS)
+	make clean -C $(LIBFT_DIR)
+
+fclean: clean
 	$(RM) $(NAME)
-	make clean -C libft
+	make fclean -C $(LIBFT_DIR)
 
-fclean : clean
-	$(RM) $(NAME)
-	make fclean -C libft
+re: fclean all
 
-re : fclean all
-
-
+.PHONY: all clean fclean re
