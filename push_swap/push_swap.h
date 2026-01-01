@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include <ctype.h>
-#include "../libft/libft.h"
+#include "libft/libft.h"
 
 
 typedef struct s_node
@@ -72,3 +72,4 @@ void free_split(char **arr);
 void	free_stack(t_stack *s);
 
 #endif
+
