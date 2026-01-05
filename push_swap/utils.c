@@ -31,3 +31,15 @@ int	ft_isnumber(const char *s)
 	}
 	return (1);
 }
+
+void	free_split(char **arr)
+{
+	int	i;
+
+	if (!arr)
+		return ;
+	i = 0;
+	while (arr[i])
+		free(arr[i++]);
+	free(arr);
+}
