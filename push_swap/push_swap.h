@@ -70,6 +70,8 @@ void sort_5(t_stack *a, t_stack *b);
 int ft_isnumber(const char *s);
 void free_split(char **arr);
 void	free_stack(t_stack *s);
+int	check_duplicate(t_stack *a, int value);
 
 #endif
+
 
