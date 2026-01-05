@@ -14,7 +14,7 @@ void	free_stack(t_stack *s)
 	s->size = 0;
 }
 
-static int	check_duplicate(t_stack *a, int value)
+int	check_duplicate(t_stack *a, int value)
 {
 	t_node	*nod;
 
