@@ -40,29 +40,35 @@ static void	push_chunk(t_stack *a, t_stack *b, int start, int end)
 	}
 }
 
+static void	find_max_and_pos(t_stack *b, int *max, int *pos)
+{
+	t_node	*cur;
+	int		i;
+
+	cur = b->top;
+	*max = cur->index;
+	*pos = 0;
+	i = 0;
+	while (cur)
+	{
+		if (cur->index > *max)
+		{
+			*max = cur->index;
+			*pos = i;
+		}
+		cur = cur->next;
+		i++;
+	}
+}
+
 static void	push_back_all(t_stack *a, t_stack *b)
 {
-	int			max;
-	int			pos;
-	int			i;
-	t_node		*cur;
+	int	max;
+	int	pos;
 
 	while (b->size)
 	{
-		max = b->top->index;
-		pos = 0;
-		i = 0;
-		cur = b->top;
-		while (cur)
-		{
-			if (cur->index > max)
-			{
-				max = cur->index;
-				pos = i;
-			}
-			cur = cur->next;
-			i++;
-		}
+		find_max_and_pos(b, &max, &pos);
 		if (pos <= b->size / 2)
 			while (b->top->index != max)
 				rb(b);
