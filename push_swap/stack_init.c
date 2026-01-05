@@ -60,19 +60,3 @@ void	push_bottom(t_stack *s, t_node *new)
 	s->bottom = new;
 	s->size++;
 }
-
-int	is_sorted(t_stack *a)
-{
-	t_node	*nod;
-
-	nod = a->top;
-	if (!a || a->size < 2)
-		return (1);
-	while (nod && nod->next)
-	{
-		if (nod->value > nod->next->value)
-			return (0);
-		nod = nod->next;
-	}
-	return (1);
-}
