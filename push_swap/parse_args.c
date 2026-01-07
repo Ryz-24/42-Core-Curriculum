@@ -33,21 +33,10 @@ static void	parse_value(t_stack *a, char *str, char **parts)
 	push_bottom(a, new_node((int)v));
 }
 
-static void	parse_parts(t_stack *a, char **parts)
-{
-	int	j;
-
-	j = 0;
-	while (parts[j])
-	{
-		parse_value(a, parts[j], parts);
-		j++;
-	}
-}
-
 void	parse_args(t_stack *a, int ac, char **av)
 {
 	int		i;
+	int		j;
 	char	**parts;
 
 	i = 1;
@@ -59,7 +48,12 @@ void	parse_args(t_stack *a, int ac, char **av)
 			free_stack(a);
 			error_exit();
 		}
-		parse_parts(a, parts);
+		j = 0;
+		while (parts[j])
+		{
+			parse_value(a, parts[j], parts);
+			j++;
+		}
 		free_split(parts);
 		i++;
 	}
