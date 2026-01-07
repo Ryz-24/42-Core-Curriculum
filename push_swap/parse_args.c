@@ -12,26 +12,32 @@
 
 #include "push_swap.h"
 
-static void	handle_error(t_stack *a, char **parts)
-{
-	free_split(parts);
-	free_stack(a);
-	error_exit();
-}
-
 static void	parse_value(t_stack *a, char *str, char **parts)
 {
 	long	v;
 
 	if (!ft_isnumber(str))
-		handle_error(a, parts);
+	{
+		free_split(parts);
+		free_stack(a);
+		error_exit();
+	}
 	v = ft_atoi(str);
 	if (v < INT_MIN || v > INT_MAX)
-		handle_error(a, parts);
+	{
+		free_split(parts);
+		free_stack(a);
+		error_exit();
+	}
 	if (check_duplicate(a, (int)v))
-		handle_error(a, parts);
+	{
+		free_split(parts);
+		free_stack(a);
+		error_exit();
+	}
 	push_bottom(a, new_node((int)v));
 }
+
 
 void	parse_args(t_stack *a, int ac, char **av)
 {
