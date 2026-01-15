@@ -46,9 +46,9 @@ static void	check_chars(t_game *game)
 	int	p_count;
 	int	e_count;
 
-	p = 0;
+	p_count = 0;
 	e_count = 0;
-	game->collectibles = 0;
+	game->collectible = 0;
 	i = 0;
 	while (i < game->height)
 	{
@@ -64,14 +64,14 @@ static void	check_chars(t_game *game)
 			else if (game->map[i][j] == 'E')
 				e_count++;
 			else if (game->map[i][j] == 'C')
-				game->collectibles++;
+				game->collectible++;
 			else if (game->map[i][j] != '0' && game->map[i][j] != '1')
 				error_msg("Invalid character in map\n");
 			j++;
 		}
 		i++;
 	}
-	if (p_count != 1 || e_count != 1 || game->collectibles < 1)
+	if (p_count != 1 || e_count != 1 || game->collectible < 1)
 		error_msg("Invalid number of P, E, or C\n");
 }
 
