@@ -1,0 +1,128 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rzaatreh <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/09/10 14:32:12 by rzaatreh          #+#    #+#             */
+/*   Updated: 2025/09/29 17:14:01 by rzaatreh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "get_next_line.h"
+
+static char	*ft_free(char *s, char *p)
+{
+	if (s)
+		free(s);
+	if (p)
+		free(p);
+	return (NULL);
+}
+
+static char	*read_line(int fd, char *buffer)
+{
+	char	*temp;
+	char	*to_read;
+	int		bytes;
+
+	bytes = 1;
+	to_read = malloc(BUFFER_SIZE + 1);
+	if (!to_read)
+		return (ft_free(to_read, buffer));
+	while (!g_strchr(buffer, '\n') && bytes > 0)
+	{
+		bytes = read(fd, to_read, BUFFER_SIZE);
+		if (bytes < 0)
+			return (ft_free(to_read, buffer));
+		to_read[bytes] = '\0';
+		temp = g_strjoin(buffer, to_read);
+		if (!temp)
+			return (ft_free(to_read, buffer));
+		free(buffer);
+		buffer = temp;
+	}
+	free(to_read);
+	return (buffer);
+}
+
+static char	*extract_line(char *buffer)
+{
+	int			i;
+	char		*temp;
+
+	i = 0;
+	if (!buffer || !buffer[0])
+		return (NULL);
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
+	if (buffer[i] == '\n')
+		i++;
+	temp = g_substr(buffer, 0, i);
+	if (!temp)
+		return (NULL);
+	return (temp);
+}
+
+static char	*trim_line(char *buffer)
+{
+	int			i;
+	char		*result;
+
+	i = 0;
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
+	if (!buffer[i])
+		return (ft_free(buffer, NULL));
+	result = g_strdup(buffer + i + 1);
+	free(buffer);
+	if (!result || *result == '\0')
+		return (ft_free(result, NULL));
+	return (result);
+}
+
+char	*get_next_line(int fd)
+{
+	char		*line;
+	static char	*buffer;
+
+	if (fd < 0 || BUFFER_SIZE <= 0)
+		return (NULL);
+	if (!buffer)
+		buffer = g_strdup("");
+	if (!buffer)
+		return (NULL);
+	buffer = read_line(fd, buffer);
+	if (!buffer)
+		return (NULL);
+	line = extract_line(buffer);
+	buffer = trim_line(buffer);
+	if (!line)
+	{
+		free(buffer);
+		buffer = NULL;
+	}
+	return (line);
+}
+/*
+int main ()
+{
+	int     fd;
+	char    *line;
+
+	fd = open("test1.txt", O_RDONLY);
+	if (fd < 0)
+	{
+		printf("Error opening file");
+		return (1);
+	}
+
+	while ((line = get_next_line(fd)) != NULL)
+	{
+		printf("%s", line);
+		free(line);
+	}
+	close(fd);
+	return (0);
+}*/
