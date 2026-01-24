@@ -12,7 +12,8 @@ MLX_FLAGS = -lXext -lX11 -lm
 
 INCLUDES = -I$(LIBFT_DIR) -I$(MLX_DIR)
 
-SRC = main.c \
+SRC = exit_clean.c \
+	  main.c \
       map_read.c \
       map_check.c \
       map_path.c \
