@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   rendering.c                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rzaatreh <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/17 15:26:46 by rzaatreh          #+#    #+#             */
-/*   Updated: 2026/01/17 15:26:51 by rzaatreh         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "so_long.h"
 
 /* Multiplying by TILE_SIZE converts tiles → pixels */
@@ -21,14 +9,14 @@ void	init_mlx(t_game *game)
 {
 	game->mlx = mlx_init();
 	if (!game->mlx)
-		error_msg("mlx_init failed\n");
+		error_msg(game, "mlx_init failed\n");
 	game->win = mlx_new_window(
 			game->mlx,
 			game->width * TILE_SIZE,
 			game->height * TILE_SIZE,
 			"so_long");
 	if (!game->win)
-		error_msg("mlx_new_window failed\n");
+		error_msg(game, "mlx_new_window failed\n");
 }
 
 /* loads all the XPM files once and stores the MLX image pointers 
@@ -39,19 +27,19 @@ void	load_images(t_game *game)
 	int	h;
 
 	game->img_wall = mlx_xpm_file_to_image(
-			game->mlx, "textures/wall.xpm", &w, &h);
+			game->mlx, "textures/tile.xpm", &w, &h);
 	game->img_floor = mlx_xpm_file_to_image(
-			game->mlx, "textures/floor.xpm", &w, &h);
+			game->mlx, "textures/pac-floor.xpm", &w, &h);
 	game->img_player = mlx_xpm_file_to_image(
-			game->mlx, "textures/player.xpm", &w, &h);
+			game->mlx, "textures/pac-man.xpm", &w, &h);
 	game->img_exit = mlx_xpm_file_to_image(
 			game->mlx, "textures/exit.xpm", &w, &h);
 	game->img_collectible = mlx_xpm_file_to_image(
-			game->mlx, "textures/collectible.xpm", &w, &h);
+			game->mlx, "textures/coin.xpm", &w, &h);
 	if (!game->img_wall || !game->img_floor
 		|| !game->img_player || !game->img_exit
 		|| !game->img_collectible)
-		error_msg("Failed to load images\n");
+		error_msg(game, "Failed to load images\n");
 }
 
 static void	render_map_helper(t_game *game, char tile, int x, int y)
