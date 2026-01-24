@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   map_path.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rzaatreh <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/17 15:26:05 by rzaatreh          #+#    #+#             */
-/*   Updated: 2026/01/17 15:26:08 by rzaatreh         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "so_long.h"
 
 static char	**copy_map(t_game *game)
@@ -54,11 +42,14 @@ void	free_map(char **map)
 {
 	int	i;
 
+	if (!map)
+		return ;
 	i = 0;
 	while (map[i])
 		free(map[i++]);
 	free(map);
 }
+
 
 void	check_path(t_game *game)
 {
@@ -68,7 +59,7 @@ void	check_path(t_game *game)
 
 	copy = copy_map(game);
 	if (!copy)
-		error_msg("Map copy failed\n");
+		error_msg(game, "Map copy failed\n");
 	flood_fill(copy, game->player_x, game->player_y,
 		game->width, game->height);
 	i = 0;
@@ -80,7 +71,7 @@ void	check_path(t_game *game)
 			if (copy[i][j] == 'C' || copy[i][j] == 'E')
 			{
 				free_map(copy);
-				error_msg("Invalid path\n");
+				error_msg(game, "Invalid path\n");
 			}
 			j++;
 		}
