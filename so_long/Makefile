@@ -10,8 +10,6 @@ MLX_DIR = minilibx-linux
 MLX = $(MLX_DIR)/libmlx.a
 MLX_FLAGS = -lXext -lX11 -lm
 
-INCLUDES = -I$(LIBFT_DIR) -I$(MLX_DIR)
-
 SRC = exit_clean.c \
 	  main.c \
       map_read.c \
@@ -30,9 +28,6 @@ $(NAME): $(OBJ)
 	make -C $(LIBFT_DIR)
 	make -C $(MLX_DIR)
 	$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(MLX) $(MLX_FLAGS) -o $(NAME)
-
-%.o: %.c
-	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
 	make -C $(LIBFT_DIR) clean
