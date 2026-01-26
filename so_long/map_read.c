@@ -10,10 +10,12 @@ static int	count_lines(char *file)
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 		return (-1);
-	while ((line = get_next_line(fd)) != NULL)
+	line = get_next_line(fd);
+	while (line)
 	{
 		count++;
 		free(line);
+		line = get_next_line(fd);
 	}
 	close(fd);
 	return (count);
@@ -36,13 +38,14 @@ void	read_map(t_game *game, char *file)
 	if (fd == -1)
 		error_msg(game, "Failed to open map\n");
 	i = 0;
-	while ((line = get_next_line(fd)) != NULL)
+	line = get_next_line(fd);
+	while (line)
 	{
 		game->map[i] = ft_strtrim(line, "\n");
-		if (!game->map[i])
-			error_msg(game, "Malloc failed\n");
 		free(line);
-		i++;
+		if (!game->map[i++])
+			error_msg(game, "Malloc failed\n");
+		line = get_next_line(fd);
 	}
 	game->map[i] = NULL;
 	close(fd);
