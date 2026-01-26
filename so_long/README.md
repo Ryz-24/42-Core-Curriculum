@@ -85,8 +85,9 @@ All textures are provided in XPM format and are loaded at runtime using MiniLibX
 Each tile is rendered on top of a floor texture to ensure proper layering.
 
 ## Resources
+[Understanding MiniLibX – Practical X11 Guide](https://medium.com/@jalal92/understanding-the-minilibx-a-practical-dive-into-x-window-programming-api-in-c-cb8a6f72bec3)
 
-
+[so_long – 42 Project Guide](https://42-cursus.gitbook.io/guide/2-rank-02/so_long)
 
 ### AI Usage
 
