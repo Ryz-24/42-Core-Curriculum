@@ -1,9 +1,9 @@
 *This project has been created as part of the 42 curriculum by rzaatreh.*
 
-# push_swap
+# SO_LONG
 
 ## Description
-**push_swap** is a small 2D game project from the 42 curriculum, built using the **MiniLibX** graphics library.
+**so_long** is a small 2D game project from the 42 curriculum, built using the **MiniLibX** graphics library.
 The goal is to create a simple top-down game where the player collects all collectibles on the map and then exits, following strict validation rules.
 
 The game reads a map from a `.ber` file and renders it in a window.
