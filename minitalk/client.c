@@ -53,7 +53,10 @@ int	main(int argc, char **argv)
 	}
 	pid = ft_atoi(argv[1]);
 	if (pid <= 0)
-		ft_printf("Invalid PID");
+	{
+		ft_printf("Invalid PID\n");
+		return (1);
+	}
 	signal(SIGUSR1, ack_handler);
 	i = 0;
 	while (argv[2][i])
