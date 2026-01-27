@@ -14,7 +14,6 @@
 #include <signal.h>
 #include <unistd.h>
 
-/*Receives the MSB first and ends with the LSB by shifting to the left*/
 static void	handle_signal(int sig, siginfo_t *info, void *context)
 {
 	static unsigned char	c;
