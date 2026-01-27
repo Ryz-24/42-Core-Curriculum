@@ -1,56 +1,30 @@
-/*
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
 
-CLIENT_SRCS = client.c
-SERVER_SRCS = server.c
+PRINTF_DIR = ft_printf
+PRINTF_LIB = $(PRINTF_DIR)/libftprintf.a
 
-LIBFT_PATH = libft
-LIBFT_ARCHIVE = $(LIBFT_PATH)/libft.a
+SRC_CLIENT = client.c
+SRC_SERVER = server.c
 
-CLIENT_NAME = client
-SERVER_NAME = server
+all: $(PRINTF_LIB) $(NAME_CLIENT) $(NAME_SERVER)
 
-all: $(CLIENT_NAME) $(SERVER_NAME)
+$(PRINTF_LIB):
+	make -C $(PRINTF_DIR)
 
-$(CLIENT_NAME): $(CLIENT_SRCS) $(LIBFT_ARCHIVE)
-	$(CC) $(CFLAGS) -o $@ $(CLIENT_SRCS) -L$(LIBFT_PATH) -lft
+$(NAME_CLIENT): $(SRC_CLIENT)
+	$(CC) $(CFLAGS) $(SRC_CLIENT) $(PRINTF_LIB) -o $(NAME_CLIENT)
 
-$(SERVER_NAME): $(SERVER_SRCS) $(LIBFT_ARCHIVE)
-	$(CC) $(CFLAGS) -o $@ $(SERVER_SRCS) -L$(LIBFT_PATH) -lft
+$(NAME_SERVER): $(SRC_SERVER)
+	$(CC) $(CFLAGS) $(SRC_SERVER) $(PRINTF_LIB) -o $(NAME_SERVER)
 
 clean:
-	$(MAKE) -C $(LIBFT_PATH) clean
+	make -C $(PRINTF_DIR) clean
 
 fclean: clean
-	$(MAKE) -C $(LIBFT_PATH) fclean
-	rm -f $(CLIENT_NAME) $(SERVER_NAME)
+	make -C $(PRINTF_DIR) fclean
+	rm -f $(NAME_CLIENT) $(NAME_SERVER)
 
 re: fclean all
 
-.PHONY: all clean fclean re bonus
-*/
-
-
-CC = cc
-CFLAGS = -Wall -Wextra -Werror
-
-SERVER = server
-CLIENT = client
-PRINTF = ft_printf.c
-
-all: $(SERVER) $(CLIENT)
-
-$(SERVER): server.c $(PRINTF)
-	$(CC) $(CFLAGS) server.c $(PRINTF) -o $(SERVER)
-
-$(CLIENT): client.c $(PRINTF)
-	$(CC) $(CFLAGS) client.c $(PRINTF) -o $(CLIENT)
-
-clean:
-	rm -f *.o
-
-fclean: clean
-	rm -f $(SERVER) $(CLIENT)
-
-re: fclean all
+.PHONY: all clean fclean re
