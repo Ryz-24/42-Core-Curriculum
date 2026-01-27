@@ -15,8 +15,6 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-/* Client send the MSB first and moves right until the LSB */
-/* character >> i Brings the target bit into the LSB by shifting to right*/
 int	g_ack = 0;
 
 static void	ack_handler(int sig)
