@@ -21,11 +21,19 @@ This project focuses on understanding:
 - Each character is sent as **8 bits**
 - The server reconstructs and prints the received message
 
+---
 ### Signal Encoding
 
 - `SIGUSR1` → bit `1`
+
 - `SIGUSR2` → bit `0`
 
+### Signal Handling
+The server uses `sigaction` to handle incoming signals:
+
+- `sigaction`: Sets up a handler for a signal.
+- `sa_sigaction`: Function executed when a signal is received; provides extra info like the sender's PID.
+- `sa_flags`: Options that modify signal handling, e.g., `SA_SIGINFO` tells the OS to use `sa_sigaction`.
 
 ## Bit Transmission Logic
 
@@ -77,7 +85,8 @@ The server will display the received message on its terminal.
 ## Allowed Functions
 - write
 - malloc, free
-- signal, sigaction
+- signal
+- sigaction
 - kill
 - getpid
 - pause
@@ -86,19 +95,21 @@ The server will display the received message on its terminal.
 
 ---
 ## Resources
-[Step-by-Step Guide to MiniLibX](https://medium.com/@Kr1sNg/step-by-step-guide-to-minitalk-project-at-school-42-deacf16369ec)
+**Project Explanation**
+- [Step-by-Step Guide to MiniLibX](https://medium.com/@Kr1sNg/step-by-step-guide-to-minitalk-project-at-school-42-deacf16369ec)
+- [Minitalk 42 project : Guide](https://medium.com/@gamerazer007/minitalk-42-project-guide-be45d74f8dfa)
+- [Understanding Minitalk](https://medium.com/@digitalpoolng/42-minitalk-building-a-simple-client-server-communication-program-in-c-a5e6d96c97ec)
+- [Minitalk – 42 Project Gitbook](https://42-cursus.gitbook.io/guide/2-rank-02/minitalk)
+- [How Does Minitalk Work](https://github.com/leogaudin/minitalk/tree/main)
+- [Signals in C language](https://www.geeksforgeeks.org/c/signals-c-language/)
 
-[Minitalk 42 project : Guide](https://medium.com/@gamerazer007/minitalk-42-project-guide-be45d74f8dfa)
-
-[Understanding Minitalk](https://medium.com/@digitalpoolng/42-minitalk-building-a-simple-client-server-communication-program-in-c-a5e6d96c97ec)
-
-[Minitalk – 42 Project Gitbook](https://42-cursus.gitbook.io/guide/2-rank-02/minitalk)
-
-[How Does Minitalk Work](https://github.com/leogaudin/minitalk/tree/main)
-
-[Signals in C language](https://www.geeksforgeeks.org/c/signals-c-language/)
-
-
+**Functions man page**
+- [sigaction](https://www.man7.org/linux/man-pages/man2/sigaction.2.html)
+- [signal](https://www.man7.org/linux/man-pages/man7/signal.7.html)
+- [sigemptyset](https://www.man7.org/linux/man-pages/man3/sigemptyset.3p.html)
+- [getpid](https://www.man7.org/linux/man-pages/man2/getpid.2.html)
+- [kill](https://www.man7.org/linux/man-pages/man2/kill.2.html)
+- [pause](https://www.man7.org/linux/man-pages/man2/pause.2.html)
 ### AI Usage
 
 ---
