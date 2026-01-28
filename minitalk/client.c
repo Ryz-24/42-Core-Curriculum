@@ -6,7 +6,7 @@
 /*   By: rzaatreh <rzaatreh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 14:25:21 by rzaatreh          #+#    #+#             */
-/*   Updated: 2026/01/27 15:41:42 by rzaatreh         ###   ########.fr       */
+/*   Updated: 2026/01/28 13:34:57 by rzaatreh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,21 @@ static void	send_char(pid_t pid, unsigned char c)
 	{
 		g_ack = 0;
 		if ((c >> bit) & 1)
-			kill(pid, SIGUSR1);
+		{
+			if (kill(pid, SIGUSR1) == -1)
+			{
+				ft_printf("Signal failed\n");
+				exit(1);
+			}
+		}
 		else
-			kill(pid, SIGUSR2);
+		{
+			if (kill(pid, SIGUSR2) == -1)
+			{
+				ft_printf("Signal failed\n");
+				exit(1);
+			}
+		}
 		while (!g_ack)
 			pause();
 		bit--;
@@ -52,7 +64,7 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	pid = ft_atoi(argv[1]);
-	if (pid <= 0)
+	if (pid <= 0 || kill(pid, 0) == -1)
 	{
 		ft_printf("Invalid PID\n");
 		return (1);
