@@ -26,32 +26,27 @@ static void	ack_handler(int sig)
 static void	send_char(pid_t pid, unsigned char c)
 {
 	int	bit;
+	int	sig;
 
 	bit = 7;
 	while (bit >= 0)
 	{
 		g_ack = 0;
 		if ((c >> bit) & 1)
-		{
-			if (kill(pid, SIGUSR1) == -1)
-			{
-				ft_printf("Signal failed\n");
-				exit(1);
-			}
-		}
+			sig = SIGUSR1;
 		else
+			sig = SIGUSR2;
+		if (kill(pid, sig) == -1)
 		{
-			if (kill(pid, SIGUSR2) == -1)
-			{
-				ft_printf("Signal failed\n");
-				exit(1);
-			}
+			ft_printf("Signal failed\n");
+			exit(1);
 		}
 		while (!g_ack)
 			pause();
 		bit--;
 	}
 }
+
 
 int	main(int argc, char **argv)
 {
