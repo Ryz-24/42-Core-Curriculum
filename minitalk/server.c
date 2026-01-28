@@ -6,7 +6,7 @@
 /*   By: rzaatreh <rzaatreh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/01/26 14:24:55 by rzaatreh          #+#    #+#             */
-/*   Updated: 2026/01/27 15:41:23 by rzaatreh         ###   ########.fr       */
+/*   Updated: 2026/01/28 13:34:11 by rzaatreh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,10 @@ int	main(void)
 	sa.sa_sigaction = handle_signal;
 	sa.sa_flags = SA_SIGINFO;
 	sigemptyset(&sa.sa_mask);
-	sigaction(SIGUSR1, &sa, NULL);
-	sigaction(SIGUSR2, &sa, NULL);
+	if (sigaction(SIGUSR1, &sa, NULL) == -1)
+		return (0);
+	if (sigaction(SIGUSR2, &sa, NULL) == -1)
+		return (0);
 	while (1)
 		pause();
 	return (0);
