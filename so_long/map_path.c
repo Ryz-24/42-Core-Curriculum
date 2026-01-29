@@ -29,7 +29,7 @@ static void	flood_fill(char **map, int x, int y, int width, int height)
 {
 	if (x < 0 || y < 0 || x >= width || y >= height)
 		return ;
-	if (map[y][x] == '1' || map[y][x] == 'E' || map[y][x] == 'V')
+	if (map[y][x] == '1' || map[y][x] == 'V')
 		return ;
 	map[y][x] = 'V';
 	flood_fill(map, x + 1, y, width, height);
