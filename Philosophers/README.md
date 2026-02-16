@@ -208,7 +208,19 @@ philo/
 ---
 
 ## Resources
-[Philosophers 42 Guide](https://medium.com/@ruinadd/philosophers-42-guide-the-dining-philosophers-problem-893a24bc0fe2)
+**Threads:**
+ - [Understanding Threads in C](https://medium.com/@akshatarhabib/understanding-threads-in-c-c9feb5e9372a)
+ - [Philosophers 42 Guide](https://medium.com/@ruinadd/philosophers-42-guide-the-dining-philosophers-problem-893a24bc0fe2)
+ - [Multithreading in C](https://www.geeksforgeeks.org/c/multithreading-in-c/)
+ - [Threads, Mutexes and Concurrent Programming in C](https://www.codequoi.com/en/threads-mutexes-and-concurrent-programming-in-c/)
+ - [Introduction to Threads](https://youtu.be/ldJ8WGZVXZk?si=1pc7qel4pTd42QJZ)
+ - [Race Condition](https://www.geeksforgeeks.org/operating-systems/race-condition-in-operating-systems/)
+ - [Basic POSIX Threads Programming](https://github.com/japnitahuja/posix-threads)
+
+**Project Guide:**
+ - [Philosophers 42 Guide](https://medium.com/@ruinadd/philosophers-42-guide-the-dining-philosophers-problem-893a24bc0fe2)
+ - [Dining Philosophers problem](https://medium.com/@denaelgammal/dining-philosophers-problem-42-project-guide-mandatory-part-a20fb8dc530e)
+ - [Philosophers | Guide-GitBook](https://share.google/798IM4TALJA2c7Zci)
 
 ---
 ## AI Usage
