@@ -77,7 +77,7 @@ char *expand_string(char *str, char **envp)
                 i += 2;
             }
             // $VAR case
-            else if (is_var_char(str[i + 1]))
+            else if (str[i + 1] && is_var_char(str[i + 1]))
             {
                 i++;
                 start = i;
