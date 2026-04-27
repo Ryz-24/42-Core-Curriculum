@@ -6,6 +6,7 @@ CFLAGS		= -Wall -Wextra -Werror -pthread
 SRC			= main.c \
 			  main_helper.c \
 			  init.c \
+			  init2.c \
 			  time.c \
 			  forks.c \
 			  action.c \
