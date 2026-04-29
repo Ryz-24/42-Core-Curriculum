@@ -33,5 +33,12 @@ void	sleep_philo(t_philo *philo)
 
 void	think(t_philo *philo)
 {
+	long	think_time;
+
 	print_state(philo, "is thinking");
+	think_time = philo->data->time_to_die
+		- philo->data->time_to_eat
+		- philo->data->time_to_sleep;
+	if (think_time > 0 && philo->data->nb_philo % 2 != 0)
+		smart_sleep(think_time / 2, philo->data);
 }
