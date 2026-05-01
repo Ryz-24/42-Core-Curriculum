@@ -114,7 +114,7 @@ int	builtin_export(char **argv, char ***envp)
 	{
 		if (!is_valid_identifier(argv[i]))
 		{
-			ft_putstr_fd("export: not a valid identifier\n", 2);
+			ft_putstr_fd("export: not a valid identifier\n", STDERR_FILENO);
 			status = 1;
 			i++;
 			continue ;
@@ -123,12 +123,14 @@ int	builtin_export(char **argv, char ***envp)
 		if (equal)
 		{
 			key = ft_substr(argv[i], 0, equal - argv[i]);
+			if (!key)
+				return (1);
 			index = find_env_index(*envp, key);
+			free(key);
 			if (index >= 0)
 				update_env(envp, index, argv[i]);
 			else
 				add_env(envp, argv[i]);
-			free(key);
 		}
 		i++;
 	}
