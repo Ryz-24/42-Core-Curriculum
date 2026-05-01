@@ -11,13 +11,10 @@ int check_quotes(char *input)
     quote = 0;
     while (input[i])
     {
-        if ((input[i] == '\'' || input[i] == '"'))
-        {
-            if (quote == 0)
-                quote = input[i];
-            else if (quote == input[i])
-                quote = 0;
-        }
+        if (quote == 0 && (input[i] == '\'' || input[i] == '"'))
+            quote = input[i];
+        else if (quote != 0 && input[i] == quote)
+            quote = 0;
         i++;
     }
     if (quote != 0)
