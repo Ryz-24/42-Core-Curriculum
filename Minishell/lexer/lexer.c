@@ -32,9 +32,9 @@ char *read_word(char *input, int *i, t_quote_type *quote)
         if (input[*i] == '\'' || input[*i] == '"')
         {
             piece = read_quoted(input, i, &q);
-            if (q == SINGLE_QUOTE)
+            if (piece && q == SINGLE_QUOTE && *quote == NO_QUOTE)
                 *quote = SINGLE_QUOTE;
-            else if (*quote != SINGLE_QUOTE)
+            else if (piece && *quote == NO_QUOTE)
                 *quote = DOUBLE_QUOTE;
         }
         else
@@ -58,7 +58,6 @@ char *read_word(char *input, int *i, t_quote_type *quote)
     }
     return (buffer);
 }
-
 /*
 Responsibilities:
 
