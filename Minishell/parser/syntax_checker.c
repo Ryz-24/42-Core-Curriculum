@@ -17,19 +17,19 @@
 **	- 0 if syntax is valid
 **	- 1 if a syntax error is found
 */
+#include "minishell.h"
+
 int check_syntax(t_token *tokens)
 {
     t_token *curr;
 
     if (!tokens)
         return (0);
-
     if (tokens->type == PIPE)
     {
-        printf("minishell: syntax error near unexpected token `|'\n");
+        ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", STDERR_FILENO);
         return (1);
     }
-
     curr = tokens;
     while (curr)
     {
@@ -37,29 +37,26 @@ int check_syntax(t_token *tokens)
         {
             if (!curr->next || curr->next->type == PIPE)
             {
-                printf("minishell: syntax error near unexpected token `|'\n");
+                ft_putstr_fd("minishell: syntax error near unexpected token `|'\n", STDERR_FILENO);
                 return (1);
             }
         }
-
         if (is_redirection(curr->type))
         {
             if (!curr->next)
             {
-                printf("minishell: syntax error near unexpected token `newline'\n");
+                ft_putstr_fd("minishell: syntax error near unexpected token `newline'\n", STDERR_FILENO);
                 return (1);
             }
-
             if (curr->next->type != WORD)
             {
-                printf("minishell: syntax error near unexpected token `%s'\n",
-                       curr->next->value);
+                ft_putstr_fd("minishell: syntax error near unexpected token `", STDERR_FILENO);
+                ft_putstr_fd(curr->next->value, STDERR_FILENO);
+                ft_putstr_fd("'\n", STDERR_FILENO);
                 return (1);
             }
         }
-
         curr = curr->next;
     }
-
     return (0);
 }
