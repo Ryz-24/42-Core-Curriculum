@@ -7,6 +7,8 @@ static int	is_numeric(char *str)
 	i = 0;
 	if (str[i] == '+' || str[i] == '-')
 		i++;
+	if (!str[i])
+		return (0);
 	while (str[i])
 	{
 		if (!ft_isdigit(str[i]))
@@ -37,7 +39,7 @@ int	builtin_exit(char **argv)
 {
 	int	status;
 
-	ft_putendl_fd("exit", STDOUT_FILENO);
+	ft_putendl_fd("exit", STDERR_FILENO);
 	if (!argv[1])
 		exit(g_exit_status);
 	if (!is_numeric(argv[1]))
@@ -51,5 +53,5 @@ int	builtin_exit(char **argv)
 		return (1);
 	}
 	status = ft_atoi(argv[1]);
-	exit(status);
+	exit(status % 256);
 }
