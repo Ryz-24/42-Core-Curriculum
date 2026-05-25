@@ -128,7 +128,6 @@ The implementation guarantees:
 * Accurate death timing (within acceptable margin)
 * Proper cleanup of all allocated memory and mutexes
 
----
 
 ## Evaluation Requirements
 
@@ -150,8 +149,6 @@ Test cases include:
 ./philo 4 310 200 100
 ./philo 5 800 200 200 7
 ```
-
----
 
 ## Compilation
 
@@ -176,27 +173,6 @@ make fclean
 make re
 ```
 
----
-
-## Project Structure
-
-```
-philo/
-├── main.c
-├── main_helper.c
-├── init.c
-├── init2.c
-├── routine.c
-├── actions.c
-├── forks.c
-├── monitor.c
-├── time.c
-├── utils.c
-├── philo.h
-└── Makefile
-```
-
----
 
 ## Key Concepts Learned
 
