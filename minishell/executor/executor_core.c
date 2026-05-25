@@ -1,0 +1,53 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor_core.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rzaatreh <rzaatreh@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/05/24 13:08:18 by rzaatreh          #+#    #+#             */
+/*   Updated: 2026/05/24 13:08:19 by rzaatreh         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "minishell.h"
+
+int	execute_single_builtin(t_cmd *cmd, char ***envp)
+{
+	int	saved_in;
+	int	saved_out;
+	int	ret;
+
+	saved_in = dup(STDIN_FILENO);
+	saved_out = dup(STDOUT_FILENO);
+	if (apply_redirections(cmd->redir))
+	{
+		dup2(saved_in, STDIN_FILENO);
+		dup2(saved_out, STDOUT_FILENO);
+		close(saved_in);
+		close(saved_out);
+		return (1);
+	}
+	ret = execute_builtin(cmd, envp);
+	dup2(saved_in, STDIN_FILENO);
+	dup2(saved_out, STDOUT_FILENO);
+	close(saved_in);
+	close(saved_out);
+	return (ret);
+}
+
+int	run_redir_only(t_cmd *cmd)
+{
+	int	saved_in;
+	int	saved_out;
+	int	ret;
+
+	saved_in = dup(STDIN_FILENO);
+	saved_out = dup(STDOUT_FILENO);
+	ret = apply_redirections(cmd->redir);
+	dup2(saved_in, STDIN_FILENO);
+	dup2(saved_out, STDOUT_FILENO);
+	close(saved_in);
+	close(saved_out);
+	return (ret);
+}
