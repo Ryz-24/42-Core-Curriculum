@@ -31,16 +31,51 @@ static t_cmd	*lex_and_parse(char *line)
 	return (cmds);
 }
 
-void	process_input(char *line, char ***envp)
+/*
+** read_full_line:
+**	Handles unclosed quotes by prompting "> " for continuation,
+**	matching bash behavior. Keeps reading and appending lines
+**	until quotes are balanced or ctrl-C / ctrl-D is received.
+**	Returns the complete joined line, or NULL on interrupt/EOF.
+*/
+static char	*read_full_line(char *first)
 {
+	char	*line;
+	char	*tmp;
+	char	*joined;
+
+	line = ft_strdup(first);
+	if (!line)
+		return (NULL);
+	while (check_quotes(line) == 1)
+	{
+		tmp = readline("> ");
+		if (!tmp)
+		{
+			free(line);
+			return (NULL);
+		}
+		joined = ft_strjoin(line, "\n");
+		free(line);
+		line = ft_strjoin(joined, tmp);
+		free(joined);
+		free(tmp);
+		if (!line)
+			return (NULL);
+	}
+	return (line);
+}
+
+void	process_input(char *first, char ***envp)
+{
+	char	*line;
 	t_cmd	*cmds;
 
-	if (check_quotes(line))
-	{
-		g_exit_status = 1;
+	line = read_full_line(first);
+	if (!line)
 		return ;
-	}
 	cmds = lex_and_parse(line);
+	free(line);
 	if (!cmds)
 		return ;
 	if (expand_commands(cmds, *envp))
