@@ -14,10 +14,17 @@
 
 int	g_exit_status = 0;
 
+/*
+** handle_sigint:
+**	SIGINT handler for interactive mode (no child running).
+**	Records signal number only — subject rule: global stores
+**	signal number, nothing else.
+**	rl_redisplay is NOT called here — shell_loop handles the
+**	prompt after readline returns.
+*/
 static void	handle_sigint(int sig)
 {
-	(void)sig;
-	g_exit_status = 130;
+	g_exit_status = sig;
 	ft_putchar_fd('\n', STDOUT_FILENO);
 	rl_on_new_line();
 	rl_replace_line("", 0);
