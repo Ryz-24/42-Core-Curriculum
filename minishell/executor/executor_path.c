@@ -51,6 +51,28 @@ static char	*search_path_dirs(char **dirs, char *cmd)
 	return (NULL);
 }
 
+/*
+** is_directory:
+**	Returns 1 if path is a directory (via stat S_ISDIR).
+**	Used to print "Is a directory" instead of "Permission denied"
+**	when the user tries to execute a directory (e.g. ./ or /).
+*/
+int	is_directory(char *path)
+{
+	struct stat	st;
+
+	if (stat(path, &st) == 0 && S_ISDIR(st.st_mode))
+		return (1);
+	return (0);
+}
+
+/*
+** get_cmd_path:
+**	Resolves full executable path.
+**	If argv[0] contains '/': treat as direct path.
+**	Otherwise: search PATH directories left to right.
+**	Returns allocated path string, or NULL if not found.
+*/
 char	*get_cmd_path(char **argv, char **envp)
 {
 	char	*path_env;
