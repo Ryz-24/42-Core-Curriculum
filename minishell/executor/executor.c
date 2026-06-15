@@ -35,10 +35,7 @@ static void	run_child(t_cmd *cmd, int **pipes, int *idx, char ***envp)
 		ft_putstr_fd(": command not found\n", STDERR_FILENO);
 		exit(127);
 	}
-	execve(path, cmd->argv, *envp);
-	perror(path);
-	free(path);
-	exit(126);
+	exec_cmd(path, cmd, envp);
 }
 
 static int	fork_pipeline(t_cmd *cmds, int **pipes, int n, char ***envp)
@@ -69,45 +66,54 @@ static int	fork_pipeline(t_cmd *cmds, int **pipes, int n, char ***envp)
 	return (0);
 }
 
-int	execute_pipeline(t_cmd *cmds, char ***envp)
+static void	set_parent_sigint(void (*handler)(int))
 {
-	int		n;
-	int		**pipes;
-	int		last_status;
+	struct sigaction	sa;
 
+	ft_memset(&sa, 0, sizeof(sa));
+	sa.sa_handler = handler;
+	sigemptyset(&sa.sa_mask);
+	if (handler == handle_sigint)
+		sa.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &sa, NULL);
+}
+
+static int	run_forked(t_cmd *cmds, char ***envp)
+{
+	int		**pipes;
+	int		n;
+	int		status;
+
+	n = count_cmds(cmds);
+	pipes = create_pipes(n);
+	if (n > 1 && !pipes)
+		return (1);
+	set_parent_sigint(SIG_IGN);
+	if (fork_pipeline(cmds, pipes, n, envp))
+		return (close_pipes(pipes, n), free_pipes(pipes, n - 1),
+			set_parent_sigint(handle_sigint), 1);
+	close_pipes(pipes, n);
+	free_pipes(pipes, n - 1);
+	status = 0;
+	wait_all(&status);
+	if (g_exit_status == SIGINT)
+		ft_putchar_fd('\n', STDOUT_FILENO);
+	set_parent_sigint(handle_sigint);
+	return (status);
+}
+
+int	execute_all(t_cmd *cmds, char ***envp)
+{
+	int	n;
+
+	if (!cmds)
+		return (0);
+	if (open_heredocs(cmds))
+		return (1);
 	n = count_cmds(cmds);
 	if (n == 1 && cmds->argv && is_builtin(cmds->argv[0]))
 		return (execute_single_builtin(cmds, envp));
 	if (n == 1 && is_redir_only(cmds))
 		return (run_redir_only(cmds));
-	pipes = create_pipes(n);
-	if (n > 1 && !pipes)
-		return (1);
-	if (fork_pipeline(cmds, pipes, n, envp))
-	{
-		close_pipes(pipes, n);
-		free_pipes(pipes, n - 1);
-		return (1);
-	}
-	close_pipes(pipes, n);
-	free_pipes(pipes, n - 1);
-	last_status = 0;
-	wait_all(&last_status);
-	return (last_status);
-}
-
-int	execute_all(t_cmd *cmds, char ***envp)
-{
-	int	status;
-
-	if (!cmds)
-		return (0);
-	if (open_heredocs(cmds))
-	{
-		g_exit_status = 1;
-		return (1);
-	}
-	status = execute_pipeline(cmds, envp);
-	g_exit_status = status;
-	return (status);
+	return (run_forked(cmds, envp));
 }
