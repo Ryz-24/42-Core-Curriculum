@@ -125,6 +125,7 @@ void			wait_all(int *last_status);
 
 int				alloc_pipes(int **pipes, int count);
 char			*get_cmd_path(char **argv, char **envp);
+int				is_directory(char *path);
 
 int				open_heredocs(t_cmd *cmds);
 void			close_heredocs(t_cmd *cmds);
