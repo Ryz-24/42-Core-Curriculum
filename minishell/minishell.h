@@ -68,6 +68,7 @@ typedef struct s_cmd
 	struct s_cmd	*next;
 }	t_cmd;
 
+
 t_token			*lexer(char *input);
 char			*read_word(char *input, int *i, t_quote_type *quote);
 char			*read_quoted(char *input, int *i, t_quote_type *quote);
@@ -107,10 +108,10 @@ char			*get_env_value(char *name, char **envp);
 int				check_quotes(char *input);
 
 int				execute_all(t_cmd *cmds, char ***envp);
-int				execute_pipeline(t_cmd *cmds, char ***envp);
 
 int				execute_single_builtin(t_cmd *cmd, char ***envp);
 int				run_redir_only(t_cmd *cmd);
+void				exec_cmd(char *path, t_cmd *cmd, char ***envp);
 
 int				apply_redirections(t_redir *redir);
 void			setup_child_pipes(int **pipes, int index, int total);
@@ -128,6 +129,8 @@ char			*get_cmd_path(char **argv, char **envp);
 int				open_heredocs(t_cmd *cmds);
 void			close_heredocs(t_cmd *cmds);
 int				read_heredoc(char *delimiter);
+
+void				handle_sigint(int sig);
 
 void			process_input(char *line, char ***envp);
 char			**copy_env(char **envp);
