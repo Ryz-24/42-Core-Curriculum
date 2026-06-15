@@ -22,7 +22,7 @@ int	g_exit_status = 0;
 **	rl_redisplay is NOT called here — shell_loop handles the
 **	prompt after readline returns.
 */
-static void	handle_sigint(int sig)
+void	handle_sigint(int sig)
 {
 	g_exit_status = sig;
 	ft_putchar_fd('\n', STDOUT_FILENO);
