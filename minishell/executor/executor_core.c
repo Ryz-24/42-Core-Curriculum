@@ -51,3 +51,22 @@ int	run_redir_only(t_cmd *cmd)
 	close(saved_out);
 	return (ret);
 }
+
+/*
+** exec_cmd:
+**	Final step of child execution after path is resolved.
+**	Checks for directory before calling execve to match bash error message.
+**	"Is a directory" instead of "Permission denied" for ./ . / etc.
+*/
+void	exec_cmd(char *path, t_cmd *cmd, char ***envp)
+{
+	if (is_directory(path))
+	{
+		ft_putstr_fd(path, STDERR_FILENO);
+		ft_putstr_fd(": Is a directory\n", STDERR_FILENO);
+		exit(126);
+	}
+	execve(path, cmd->argv, *envp);
+	perror(path);
+	exit(126);
+}
