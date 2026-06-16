@@ -107,7 +107,6 @@ char			*get_env_value(char *name, char **envp);
 int				check_quotes(char *input);
 
 int				execute_all(t_cmd *cmds, char ***envp);
-int				execute_pipeline(t_cmd *cmds, char ***envp);
 
 int				execute_single_builtin(t_cmd *cmd, char ***envp);
 int				run_redir_only(t_cmd *cmd);
