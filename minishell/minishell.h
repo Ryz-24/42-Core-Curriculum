@@ -122,7 +122,7 @@ int				count_cmds(t_cmd *cmds);
 int				**create_pipes(int count);
 void			close_pipes(int **pipes, int count);
 void			free_pipes(int **pipes, int count);
-void			wait_all(int *last_status);
+int				wait_all(pid_t last_pid, int *last_status);
 
 int				alloc_pipes(int **pipes, int count);
 char			*get_cmd_path(char **argv, char **envp);
