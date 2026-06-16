@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   executor.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rzaatreh <rzaatreh@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/24 13:07:29 by rzaatreh          #+#    #+#             */
-/*   Updated: 2026/06/16 13:00:06 by rzaatreh         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 static void	run_child(t_cmd *cmd, int **pipes, int *idx, char ***envp)
@@ -32,32 +20,29 @@ static void	run_child(t_cmd *cmd, int **pipes, int *idx, char ***envp)
 	exec_cmd(path, cmd, envp);
 }
 
-static int	fork_pipeline(t_cmd *cmds, int **pipes, int n, char ***envp)
+static pid_t	fork_pipeline(t_cmd *cmds, int **pipes, int n, char ***envp)
 {
 	t_cmd	*cmd;
 	pid_t	pid;
+	pid_t	last_pid;
 	int		idx[2];
 
 	cmd = cmds;
 	idx[0] = 0;
 	idx[1] = n;
+	last_pid = -1;
 	while (cmd)
 	{
-		if (!cmd->argv)
-		{
-			cmd = cmd->next;
-			idx[0]++;
-			continue ;
-		}
 		pid = fork();
 		if (pid == -1)
-			return (1);
+			return (-1);
 		if (pid == 0)
 			run_child(cmd, pipes, idx, envp);
+		last_pid = pid;
 		cmd = cmd->next;
 		idx[0]++;
 	}
-	return (0);
+	return (last_pid);
 }
 
 static void	set_parent_sigint(void (*handler)(int))
@@ -77,20 +62,21 @@ static int	run_forked(t_cmd *cmds, char ***envp)
 	int		**pipes;
 	int		n;
 	int		status;
+	pid_t	last_pid;
 
 	n = count_cmds(cmds);
 	pipes = create_pipes(n);
 	if (n > 1 && !pipes)
 		return (1);
 	set_parent_sigint(SIG_IGN);
-	if (fork_pipeline(cmds, pipes, n, envp))
+	last_pid = fork_pipeline(cmds, pipes, n, envp);
+	if (last_pid == -1)
 		return (close_pipes(pipes, n), free_pipes(pipes, n - 1),
 			set_parent_sigint(handle_sigint), 1);
 	close_pipes(pipes, n);
 	free_pipes(pipes, n - 1);
 	status = 0;
-	wait_all(&status);
-	if (status == 130)
+	if (wait_all(last_pid, &status))
 		write(STDOUT_FILENO, "\n", 1);
 	set_parent_sigint(handle_sigint);
 	return (status);
@@ -103,7 +89,7 @@ int	execute_all(t_cmd *cmds, char ***envp)
 	if (!cmds)
 		return (0);
 	if (open_heredocs(cmds))
-		return (1);
+		return (g_exit_status);
 	n = count_cmds(cmds);
 	if (n == 1 && cmds->argv && is_builtin(cmds->argv[0]))
 		return (execute_single_builtin(cmds, envp));
