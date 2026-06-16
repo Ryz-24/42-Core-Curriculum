@@ -132,6 +132,8 @@ int				is_directory(char *path);
 int				open_heredocs(t_cmd *cmds);
 void			close_heredocs(t_cmd *cmds);
 int				read_heredoc(char *delimiter);
+void			heredoc_child(char *delimiter, int write_fd);
+int				heredoc_parent(int *pipefd, pid_t pid, struct sigaction *sa_old);
 
 void			process_input(char *line, char ***envp);
 char			**copy_env(char **envp);
