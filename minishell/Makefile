@@ -27,6 +27,7 @@ SRC			= main.c \
 			  executor/executor_utils.c \
 			  executor/executor_path.c \
 			  executor/heredoc.c \
+			  executor/heredoc_utils.c \
 			  builtins/builtin_cd.c \
 			  builtins/builtin_echo.c \
 			  builtins/builtin_env.c \
