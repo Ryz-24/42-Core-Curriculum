@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   executor_utils.c                                   :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rzaatreh <rzaatreh@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/24 13:07:44 by rzaatreh          #+#    #+#             */
-/*   Updated: 2026/05/24 13:07:45 by rzaatreh         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
 
 int	count_cmds(t_cmd *cmds)
@@ -74,19 +62,34 @@ void	free_pipes(int **pipes, int count)
 	free(pipes);
 }
 
-void	wait_all(int *last_status)
+/*
+** wait_all:
+**	Waits for all children. Only tracks exit status of last_pid
+**	(rightmost command = bash pipeline $? behavior).
+**	Returns 1 if last child was killed by a signal (so caller
+**	can print a newline), 0 otherwise.
+*/
+int	wait_all(pid_t last_pid, int *last_status)
 {
 	int		status;
 	pid_t	pid;
+	int		signaled;
 
+	signaled = 0;
 	while (1)
 	{
 		pid = wait(&status);
 		if (pid == -1)
 			break ;
+		if (pid != last_pid)
+			continue ;
 		if (WIFEXITED(status))
 			*last_status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
+		{
 			*last_status = 128 + WTERMSIG(status);
+			signaled = 1;
+		}
 	}
+	return (signaled);
 }
