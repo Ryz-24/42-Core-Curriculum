@@ -12,20 +12,6 @@
 
 #include "minishell.h"
 
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   executor.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: rzaatreh <rzaatreh@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/05/24 13:07:29 by rzaatreh          #+#    #+#             */
-/*   Updated: 2026/06/17 16:02:45 by rzaatreh         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "minishell.h"
-
 static void	run_child(t_cmd *cmd, int **pipes, int *idx, char ***envp)
 {
 	char	*path;
