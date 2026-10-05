@@ -1,9 +1,36 @@
 #include "PhoneBook.hpp"
 
+static bool validName(const std::string &str)
+{
+    for (size_t i = 0; i < str.length(); i++)
+    {
+        if (!isalpha(str[i]) && str[i] != ' ')
+            return (false);
+    }
+    return (true);
+}
+
+static bool validPhoneNumber(const std::string &str)
+{
+    bool hasDigit = false;
+
+    for (size_t i = 0; i < str.length(); i++)
+    {
+        if (isdigit(str[i]))
+            hasDigit = true;
+        else if (str[i] == '+' && i == 0)
+            continue;
+        else
+            return (false);
+    }
+    return (hasDigit);
+}
+
 static bool parseIndex(const std::string &line, int &out)
 {
     if (line.empty())
         return (false);
+
     int n = 0;
     for (size_t i = 0; i < line.length(); i++)
     {
@@ -35,9 +62,34 @@ static bool promptField(const std::string &label, std::string &out)
     }
 }
 
+static bool promptName(const std::string &label, std::string &out)
+{
+    while (true)
+    {
+        if (!promptField(label, out))
+            return (false);
+        if (validName(out))
+            return (true);
+        std::cout << "This field can only contain letters and spaces." << std::endl;
+    }
+}
+
+static bool promptPhone(const std::string &label, std::string &out)
+{
+    while (true)
+    {
+        if (!promptField(label, out))
+            return (false);
+        if (validPhoneNumber(out))
+            return (true);
+        std::cout << "Invalid phone number." << std::endl;
+    }
+}
+
 PhoneBook::PhoneBook() : count(0),
-                        lastAdded(-1)
-{}
+                         lastAdded(-1)
+{
+}
 
 bool PhoneBook::add_contacts()
 {
@@ -47,13 +99,13 @@ bool PhoneBook::add_contacts()
     std::string phone;
     std::string secret;
 
-    if (!promptField("First name", first))
+    if (!promptName("First name", first))
         return (false);
-    if (!promptField("Last name", last))
+    if (!promptName("Last name", last))
         return (false);
     if (!promptField("Nickname", nick))
         return (false);
-    if (!promptField("Phone number", phone))
+    if (!promptPhone("Phone number", phone))
         return (false);
     if (!promptField("Darkest secret", secret))
         return (false);
