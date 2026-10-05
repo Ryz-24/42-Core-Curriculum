@@ -10,11 +10,11 @@ int main(void)
         std::cout << "Enter a command (ADD, SEARCH, EXIT): ";
         if (!std::getline(std::cin, command))
             break;
-        if (command == "ADD")
+        if (command == "ADD" || command == "add")
             phonebook.add_contacts();
-        else if (command == "SEARCH")
+        else if (command == "SEARCH" || command == "search")
             phonebook.search_contacts();
-        else if (command == "EXIT")
+        else if (command == "EXIT" || command == "exit")
             break;
     }
     return (0);
